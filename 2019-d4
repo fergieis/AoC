@@ -1,0 +1,38 @@
+
+
+data work.one;
+	length x1 8;
+	do a = 1 to 6;
+		do b = 1 to 9;
+			do c = 1 to 9;
+				do d = 1 to 9;
+					do e = 1 to 9;
+						do f = 1 to 9;
+							if a le b and b le c and c le d and d le e and e le f then do;
+								if (a = b) or (b = c) or (c=d) or (d=e) or (e=f) then do;
+									x1=100000*a+10000*b+1000*c+100*d+10*e+f;
+									if x1 ge 178416 and x1 le 676461 then output;
+								end; end;end;end;end;end;end;end;run;
+
+proc univariate data=work.one;
+	var x1;
+
+data work.two;
+	length x1 8;
+	do a = 1 to 6;
+		do b = 1 to 9;
+			do c = 1 to 9;
+				do d = 1 to 9;
+					do e = 1 to 9;
+						do f = 1 to 9;
+							if a le b and b le c and c le d and d le e and e le f then do;
+								if (a = b and b ne c) or 
+									(b = c and b ne a and c ne d) or
+									(b ne c and c=d and d ne e) or 
+									(c ne d and d=e and e ne f) or
+									(d ne e and e=f) then do;
+									x1=100000*a+10000*b+1000*c+100*d+10*e+f;
+									if x1 ge 178416 and x1 le 676461 then output;
+								end; end;end;end;end;end;end;end;run;
+proc univariate data=work.two;
+	var x1;
